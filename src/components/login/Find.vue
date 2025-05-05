@@ -1,16 +1,18 @@
 <template>
-  <main id="content" role="main" class="w-full max-w-md mx-auto p-1">
-    <div
-      class="mt-7 bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300"
-    >
+  <main id="content" role="main" class="w-full max-w-md mx-auto p-1 rounded-xl shadow-2xl">
+    <div class="mt-7 bg-white">
       <div class="p-4 sm:p-7">
         <div class="text-center">
-          <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Forgot password?</h1>
+          <h1 class="block text-2xl font-bold text-gray-800">비밀번호를 잊으셨나요?</h1>
           <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Remember your password?
-            <a class="text-blue-600 decoration-2 hover:underline font-medium" href="#">
+            비밀번호를 아신나요?
+            <RouterLink
+              to="/login"
+              class="text-blue-600 decoration-2 hover:underline font-medium"
+              href="#"
+            >
               Login here
-            </a>
+            </RouterLink>
           </p>
         </div>
 
@@ -18,9 +20,7 @@
           <form>
             <div class="grid gap-y-4">
               <div>
-                <label for="email" class="block text-sm font-bold ml-1 mb-2 dark:text-white"
-                  >Email address</label
-                >
+                <label for="email" class="block text-sm font-bold ml-1 mb-2">Email</label>
                 <div class="relative">
                   <input
                     type="email"
@@ -37,9 +37,9 @@
               </div>
               <button
                 type="submit"
-                class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-slate-700 text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
               >
-                Reset password
+                비민번호 초기화
               </button>
             </div>
           </form>
@@ -50,12 +50,14 @@
     <p
       class="mt-3 flex justify-center items-center text-center divide-x divide-gray-300 dark:divide-gray-700"
     >
+      <!--
       <a
         class="pl-3 inline-flex items-center gap-x-2 text-sm text-gray-600 decoration-2 hover:underline hover:text-blue-600 dark:text-gray-500 dark:hover:text-gray-200"
         href="#"
       >
         Contact us!
       </a>
+      -->
     </p>
   </main>
 </template>
