@@ -5,7 +5,7 @@
         <div class="text-center">
           <h1 class="block text-2xl font-bold text-gray-800">비밀번호를 잊으셨나요?</h1>
           <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            비밀번호를 아신나요?
+            비밀번호를 아시나요?
             <RouterLink
               to="/login"
               class="text-blue-600 decoration-2 hover:underline font-medium"
