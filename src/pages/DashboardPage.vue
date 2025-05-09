@@ -125,8 +125,8 @@ import DashboardComponent from '@/components/dashboard/DashboardComponent.vue'
 import DashboardChatComponent from '@/components/dashboard/DashboardChatComponent.vue'
 import DashboardSettingComponent from '@/components/dashboard/DashboardSettingComponent.vue'
 import {
-  ChatBubbleOvalLeftEllipsisIcon,
   BuildingStorefrontIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
   Cog6ToothIcon,
 } from '@heroicons/vue/24/outline'
 
