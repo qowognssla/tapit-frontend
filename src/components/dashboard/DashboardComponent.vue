@@ -180,7 +180,6 @@
           <div>
             <label class="block text-sm font-semibold text-gray-800">전화번호</label>
             <input
-              v-model="editStoreData.phone"
               class="mt-1 w-full px-3 py-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -294,71 +293,26 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import axios from 'axios'
 
 interface Store {
-  id: string
+  _id: string
+  storeId: string
   name: string
   phone: string
+  password: string
   owner: string
   manager: string
+  address: string
   memo: string
-  status: 'Active' | 'Deactive' | 'Pending'
+  status: 'active' | 'inactive' | 'dormant' | 'terminated'
 }
 
-// 초기 데이터
-const rawStores: Omit<Store, 'status'>[] = [
-  {
-    id: 'qowognssla1',
-    name: '구로_1',
-    phone: '010-5020-7777',
-    owner: '김덕순',
-    manager: '배재훈',
-    memo: '',
-  },
-  {
-    id: 'qowognssla2',
-    name: '광명_2',
-    phone: '010-5020-7777',
-    owner: '조용필',
-    manager: '배재훈',
-    memo: '',
-  },
-  {
-    id: 'qowognssla3',
-    name: '용인_3',
-    phone: '010-5020-7777',
-    owner: '곽지쭈',
-    manager: '정민호',
-    memo: '',
-  },
-  {
-    id: 'qowognssla4',
-    name: '서울_4',
-    phone: '010-5020-7777',
-    owner: '사쿠라',
-    manager: '정민호',
-    memo: '',
-  },
-  {
-    id: 'qowognssla5',
-    name: '부산_2',
-    phone: '010-5020-7777',
-    owner: '밍밍키',
-    manager: '김아무개',
-    memo: '',
-  },
-]
-const statuses = ['Active', 'Deactive', 'Pending'] as const
-
-const stores = ref<Store[]>(
-  rawStores.map((s) => ({ ...s, status: statuses[Math.floor(Math.random() * statuses.length)] })),
-)
-const storeToDelete = ref<Store | null>(null)
-const editStoreData = ref<Store | null>(null)
-const addStoreData = ref<Store | null>(null)
-
+const stores = ref<Store[]>([])
+const addStoreData = ref<Partial<Store> | null>(null)
 // 정렬용
 const selectedSortField = ref<keyof Store>('name')
 const sortOrder = ref<'asc' | 'desc'>('asc')
@@ -368,7 +322,6 @@ const searchKeyword = ref('')
 const appliedSearchField = ref<keyof Store>('name')
 const appliedSearchTerm = ref('')
 
-// 검색 적용
 function applyFilter() {
   appliedSearchField.value = selectedSortField.value
   appliedSearchTerm.value = searchKeyword.value.trim()
@@ -379,55 +332,43 @@ function toggleSortOrder() {
   sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
 }
 
-// Delete
-function promptDelete(store: Store) {
-  storeToDelete.value = store
-}
-function confirmDelete() {
-  if (!storeToDelete.value) return
-  stores.value = stores.value.filter((s) => s.id !== storeToDelete.value!.id)
-  storeToDelete.value = null
-}
-function cancelDelete() {
-  storeToDelete.value = null
-}
 
-// Edit
-function promptEdit(store: Store) {
-  editStoreData.value = { ...store }
-}
-function confirmEdit() {
-  if (!editStoreData.value) return
-  const idx = stores.value.findIndex((s) => s.id === editStoreData.value!.id)
-  if (idx !== -1) stores.value[idx] = { ...editStoreData.value! }
-  editStoreData.value = null
-}
-function cancelEdit() {
-  editStoreData.value = null
-}
-
-// Add
+onMounted(async () => {
+  try {
+    const token = localStorage.getItem('token')
+    const res = await axios.get('http://localhost:5000/api/stores', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    stores.value = res.data
+  } catch (err) {
+    alert('가맹점 목록 불러오기 실패')
+  }
+})
 function promptAdd() {
   addStoreData.value = {
-    id: '',
+    storeId: '',
     name: '',
     phone: '',
-    owner: '',
-    manager: '',
-    memo: '',
-    status: 'Active',
+    address: '',
   }
-}
-function confirmAdd() {
-  if (!addStoreData.value) return
-  stores.value.push({ ...addStoreData.value! })
-  addStoreData.value = null
 }
 function cancelAdd() {
   addStoreData.value = null
 }
+async function confirmAdd() {
+  if (!addStoreData.value) return
+  const token = localStorage.getItem('token')
+  try {
+    const res = await axios.post('http://localhost:5000/api/stores', addStoreData.value, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    stores.value.push(res.data)
+    addStoreData.value = null
+  } catch (err) {
+    alert('가맹점 추가 실패')
+  }
+}
 
-// computed: 검색 후 정렬
 const sortedAndFiltered = computed(() => {
   let arr = [...stores.value]
   if (appliedSearchTerm.value) {

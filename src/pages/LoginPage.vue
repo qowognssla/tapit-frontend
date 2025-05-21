@@ -28,23 +28,6 @@ const email = ref('')
 const password = ref('')
 const error = ref<string>('')
 
-async function login() {
-  error.value = ''
-  try {
-    const { data } = await axios.post('/api/login', {
-      email: email.value,
-      password: password.value,
-    })
-    localStorage.setItem('token', data.token)
-    router.push('/dashboard')
-  } catch (e: unknown) {
-    if (axios.isAxiosError(e)) {
-      error.value = e.response?.data?.message ?? '로그인에 실패했습니다.'
-    } else {
-      error.value = '알 수 없는 오류가 발생했습니다.'
-    }
-  }
-}
 </script>
 
 <style scoped>

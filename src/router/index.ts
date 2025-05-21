@@ -16,7 +16,11 @@ const routes: RouteRecordRaw[] = [
       { path: 'find', name: 'login-find', component: FindComponent },
     ],
   },
-  { path: '/dashboard', component: DashboardPage },
+  {
+    path: '/dashboard',
+    name: 'dashboard',  // ✅ name 추가
+    component: DashboardPage
+  },
 ]
 
 export default createRouter({
