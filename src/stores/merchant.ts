@@ -49,7 +49,7 @@ export const useMerchantStore = defineStore('merchant', {
 
     async removeOne(id: string) {
       try {
-        await axios.delete(`/api/stores/${id}`)
+        await axios.delete(`http://localhost:5000/api/stores/${id}`)
         this.list = this.list.filter((s) => s._id !== id)
       } catch (error) {
         console.error('Failed to delete store:', error)
