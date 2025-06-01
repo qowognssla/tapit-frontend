@@ -37,3 +37,14 @@ npm run build
 ```sh
 npm run lint
 ```
+
+
+### Docker run for mongodb
+```sh
+docker run -d \
+  --name mongodb \
+  -p 27017:27017 \
+  -v ~/mongodb/data:/data/db \
+  mongo:6
+```
+
