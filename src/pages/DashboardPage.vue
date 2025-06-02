@@ -112,7 +112,11 @@
         </div>
 
         <DashboardComponent v-if="activeSection === 'merchants'" />
-        <DashboardChatComponent v-if="activeSection === 'chat'" />
+        <DashboardChatComponent
+        v-if="activeSection === 'chat'"
+				:current-user-id="currentUserId"
+				:theme="theme"
+				:is-device="isDevice"/>
         <DashboardSettingComponent v-if="activeSection === 'settings'" />
       </main>
     </div>
@@ -133,6 +137,9 @@ import {
 const openSidebar = ref(false)
 const activeSection = ref('merchants')
 const windowWidth = ref(window.innerWidth)
+const isDevice = ref(false)
+const theme = ref('light')
+const currentUserId = ref(getUserIdFromToken())
 
 const sections = [
   { id: 'merchants', label: 'Merchants', icon: BuildingStorefrontIcon },
@@ -156,6 +163,18 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateWindowWidth)
 })
+
+function getUserIdFromToken(): string | null {
+  const token = localStorage.getItem('token')
+  if (!token) return null
+  // 토큰이 jwt라면 payload 파싱
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    return payload._id || payload.userId || null
+  } catch {
+    return null
+  }
+}
 </script>
 
 <style scoped></style>
